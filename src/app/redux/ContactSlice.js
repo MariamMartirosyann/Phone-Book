@@ -30,13 +30,13 @@ const contactSlice = createSlice({
       state.list = [...state.list, newContact];
     },
     updateContact: (state, action) => {
-      const newState = state.map((item) => {
-        if (action.payload.id === item.id) {
+      const newState = state.list.map((item) => {
+        if (Number(action.payload.id) === item.id) {
           return action.payload;
         };
         return item;
       })
-      state = newState;
+      state.list = newState;
     },
     deleteContact: (state, action) => {
       state.list =  [...state.list.filter((contact) => contact.id !== action.payload.id)];

@@ -1,44 +1,66 @@
-import React from 'react';
-import { deleteContact } from '../redux/ContactSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import Grid from '@mui/material/Grid';
-
+import React from "react";
+import { deleteContact } from "../redux/ContactSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import Grid from "@mui/material/Grid";
 
 const Table = () => {
-    const contact = useSelector((state) => state.contact.list);
+  const contact = useSelector((state) => state.contact.list);
 
-    const dispatch = useDispatch();
-    
-    const handledeleteClick = (id) => {
-        dispatch(deleteContact({ id: id }))
-    }
-    return (<>
-        <h1 style={{ textAlign: 'center' }}>My Phone App</h1>
-        <Grid Container className="tableArea">
+  const dispatch = useDispatch();
 
-            <table className='table'>
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Phone </th>
-                    <th>Action</th>
+  const handleDeleteClick = (id) => {
+    dispatch(deleteContact({ id: id }));
+  };
+  return (
+    <>
+      <h1 style={{ textAlign: "center" }}>My Phone App</h1>
+      <Grid container className="tableArea">
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone </th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+          {contact
+            ? contact.map((i) => (
+                <tr key={i.id}>
+                  <td>{i.id + 1}</td>
+                  <td>{i.name} </td>
+                  <td>{i.email}</td>
+                  <td>{i.number}</td>
+                  <td>
+                    <button className="editBtn">
+                      {" "}
+                      <Link
+                        to={`/editContact/${i.id}`}
+                        className="extDecorationNone"
+                      >
+                        Edit
+                      </Link>
+                    </button>
+                    <br />
+                    <button
+                      className="editBtn"
+                      type="button"
+                      onClick={(e) => handleDeleteClick(i.id, e)}
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
-                {contact ? contact.map(i =>
-                    <tr key={i.id}>
-                        <td>{i.id + 1}</td>
-                        <td>{i.name}</td>
-                        <td>{i.number}</td>
-                        <td>
-                            <button className='editBtn'> <Link to={`/editContact/${i.id}`} className="extDecorationNone">Edit</Link></button><br />
-                            <button className='editBtn' type='button' onClick={(e) => handledeleteClick(i.id, e)}>Delete</button></td>
-                    </tr>) : null}
-
-
-            </table>
-        </Grid>
+              ))
+            : null}
+            </tbody>
+        </table>
+      </Grid>
     </>
-    )
-}
+  );
+};
 
-export default Table
+export default Table;
