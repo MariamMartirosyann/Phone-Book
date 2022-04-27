@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid';
 
 
 const Table = () => {
-    const contact = useSelector((state) => state.contact);
+    const contact = useSelector((state) => state.contact.list);
 
     const dispatch = useDispatch();
     
@@ -31,7 +31,7 @@ const Table = () => {
                         <td>{i.number}</td>
                         <td>
                             <button className='editBtn'> <Link to={`/editContact/${i.id}`} className="extDecorationNone">Edit</Link></button><br />
-                            <button className='editBtn' type='button' onClick={handledeleteClick}>Delete</button></td>
+                            <button className='editBtn' type='button' onClick={(e) => handledeleteClick(i.id, e)}>Delete</button></td>
                     </tr>) : null}
 
 

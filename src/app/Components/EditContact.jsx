@@ -10,8 +10,8 @@ const EditContact = () => {
 
   const { id } = useParams();
 
-  const contact = useSelector((state) => state);
-  const currentContact = contact.find((contact)=>contact.id === parseInt(id));
+  const contacts = useSelector((state) => state.contact.list);
+  const currentContact = contacts.find((contact)=>contact.id === parseInt(id));
 
 
   useEffect(()=>{
@@ -36,7 +36,7 @@ const EditContact = () => {
           <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder='name' /><br />
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder='email' /><br />
           <input type="phoneNumber" value={number} onChange={(e) => setNumber(e.target.value)} placeholder='Phone Number' /><br />
-          <input type="Submit" placeholder='Update Contact' className='submit' /><br />
+          <button type='button'  className='submit' >Submit</button><br />
           <button>
             <Link className='textDecorationNone' to="/">Cancel</Link></button>
         </form>
