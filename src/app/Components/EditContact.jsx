@@ -33,7 +33,7 @@ const EditContact = () => {
     const data =  {
       id: id,
       name,
-      email,
+      email:[email],
       number,
     }
     dispatch(updateContact(data))
