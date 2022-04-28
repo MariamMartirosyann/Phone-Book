@@ -21,40 +21,44 @@ const Table = () => {
             <tr>
               <th>Id</th>
               <th>Name</th>
-              <th>Email</th>
-              <th>Phone </th>
+              <th>Emails</th>
+              <th>Phones </th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
           {contact
-            ? contact.map((i) => (
+            ? contact.map((i) => {
+              console.log(i.id);
+               return (
                 <tr key={i.id}>
-                  <td>{i.id + 1}</td>
-                  <td>{i.name} </td>
-                  <td>{i.email}</td>
-                  <td>{i.number}</td>
-                  <td>
-                    <button className="editBtn">
-                      {" "}
-                      <Link
-                        to={`/editContact/${i.id}`}
-                        className="extDecorationNone"
-                      >
-                        Edit
-                      </Link>
-                    </button>
-                    <br />
-                    <button
-                      className="editBtn"
-                      type="button"
-                      onClick={(e) => handleDeleteClick(i.id, e)}
+                <td>{i.id + 1}</td>
+                <td>{i.name} </td>
+                <td>{i.email.map((item)=>( <p  key={i.id}>{item.inputEmail}</p>))}</td>
+
+                <td>{i.number.map((item)=>( <p  key={i.id}>{item.inputNumber}</p>))}</td>
+                <td>
+                  <button className="editBtn">
+                    {" "}
+                    <Link
+                      to={`/editContact/${i.id}`}
+                      className="extDecorationNone"
                     >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))
+                      Edit
+                    </Link>
+                  </button>
+                  <br />
+                  <button
+                    className="editBtn"
+                    type="button"
+                    onClick={(e) => handleDeleteClick(i.id, e)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+               )
+            })
             : null}
             </tbody>
         </table>

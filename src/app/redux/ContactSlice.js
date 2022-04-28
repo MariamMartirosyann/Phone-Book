@@ -6,15 +6,15 @@ const contactSlice = createSlice({
     list: [
       {
         id: 0,
-        name: "John Doe",
-        email:"k@mail.ru",
-        number: 149856541,
+        name:"John Doe",
+        email:[{id:1,inputEmail:"k@mail.ru"}],
+        number: [{inputNumber:2222222222}],
       },
       {
         id: 1,
         name: "Johna Smitgh",
-        email:"m@mail.ru",
-        number: 279856471,
+        email:[{id:2,inputEmail:"Johna@mail.ru"}],
+        number:[{inputNumber:1111111111}],
       },
     ]
   },

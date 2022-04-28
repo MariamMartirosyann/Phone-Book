@@ -5,48 +5,85 @@ import { useNavigate } from "react-router-dom";
 import { addContact } from "../redux/ContactSlice";
 import Navbar from "./Navbar";
 
-const Addcontact = (props) => {
+const AddContact = (props) => {
   const contact = useSelector((state) => state.contact.list);
-  const [inputList, setInputList] = useState([{ input: "" }]);
+  const [inputListEmail, setInputListEmail] = useState([]);
+  const [inputListNumber, setInputListNumber] = useState([]);
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [number, setNumber] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!name.trim() || !email.trim() || !number.trim) {
+    if (!name.trim()) {
       return;
     }
+    const data = {
+      name: name,
+      number: inputListNumber,
+      email: inputListEmail,
+    };
+    console.log(data);
     dispatch(
       addContact({
         name: name,
-        number: number,
-        email: email,
+        number: inputListNumber,
+        email: inputListEmail,
       }),
       navigate("/")
     );
   };
 
-  const handleInputChange = (e, index) => {
-    const { name, value } = e.target;
-    const list = [...inputList];
-    list[index][name] = value;
-    setInputList(list);
+  const handleEmailInputChange = (e, itemId) => {
+    const { value } = e.target;
+    const newList = inputListEmail.map((item) => {
+      if(item.id === itemId){
+        return {
+          id:itemId,
+          inputEmail: value
+        }
+      }
+      return item
+    })
+    setInputListEmail(newList);
+  };
+  
+  const handleEmailRemoveClick = (itemId) => {
+    const filteredList = inputListEmail.filter((item) => item.id !== itemId)
+    setInputListEmail(filteredList);
   };
 
-  const handleRemoveClick = (index) => {
-    const list = [...inputList];
-    list.splice(index, 1);
-    setInputList(list);
+  const handleEmailInputAdd = () => {
+    setInputListEmail([...inputListEmail, { id: Date.now(), inputEmail: "" }]);
   };
 
-  const handleInputAdd = () => {
-    setInputList([...inputList, { input: "" }]);
+  const handleNumberInputChange = (e, itemId) => {
+    const { value } = e.target;
+    const newList = inputListNumber.map((item) => {
+      if(item.id === itemId){
+        return {
+          id:itemId,
+          inputNumber: value
+        }
+      }
+      return item
+    })
+    setInputListNumber(newList);
   };
+
+  const handleNumberRemoveClick = (itemId) => {
+    const filteredList = inputListNumber.filter((item) => item.id !== itemId)
+    setInputListNumber(filteredList);
+  };
+
+
+  const handleNumberInputAdd = () => {
+    setInputListNumber([...inputListNumber, { id: Date.now(), inputNumber: "" }]);
+  };
+
+  const handleNameInputChange = (e) => setName(e.target.value)
+
   return (
     <div>
       <Navbar />
@@ -56,69 +93,71 @@ const Addcontact = (props) => {
 
         <form onSubmit={handleSubmit}>
           <input
-            {...props}
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={handleNameInputChange}
             type="text"
             placeholder="name"
           />
-          <br />
-          {inputList.map((x, i) => {
+
+          {inputListEmail.map((item, i) => {
             return (
-              <div key={i} className="box">
+              <div key={item.id}>
                 <input
-                  name="email"
+                  type="email"
                   placeholder="Enter Email"
-                  value={x.email}
-                  onChange={e => handleInputChange(e, i)}
+                  value={item.inputEmail}
+                  onChange={(e) => handleEmailInputChange(e, item.id)}
                 />
 
                 <div className="btn-box">
-                  {inputList.length !== 1 && <button
-
-                    onClick={() => handleRemoveClick(i)}>Remove</button>}
-                  {inputList.length - 1 === i && <button onClick={handleInputAdd}>Add</button>}
+                  {inputListEmail.length !== 1 && (
+                    <button onClick={() => handleEmailRemoveClick(item.id)}>
+                      Remove
+                    </button>
+                  )}
                 </div>
               </div>
             );
           })}
-          {inputList.map((x, i) => {
+          <button onClick={handleEmailInputAdd} type="button">Add email</button><br/>
+          {inputListNumber.map((item, i) => {
             return (
-              <div className="box">
+              <div className="box" key={item.id}>
                 <input
-                  name="number"
+                  
                   placeholder="Enter Number"
-                  value={x.number}
-                  onChange={e => handleInputChange(e, i)}
+                  value={item.inputNumber}
+                  onChange={(e) => handleNumberInputChange(e, item.id)}
                 />
 
                 <div className="btn-box">
-                  {inputList.length !== 1 && <button
-
-                    onClick={() => handleRemoveClick(i)}>Remove</button>}
-                  {inputList.length - 1 === i && <button onClick={handleInputAdd}>Add</button>}
+                  {inputListNumber.length !== 1 && (
+                    <button onClick={() => handleNumberRemoveClick(item.id)}>
+                      Remove
+                    </button>
+                  )}
+                  
                 </div>
               </div>
             );
           })}
-
-          <input
-            {...props}
-            value={number}
-            onChange={(e) => setNumber(e.target.value)}
-            type="phoneNumber"
-            placeholder="Phone Number"
-          />
+         
+          <button type="button" onClick={handleNumberInputAdd}>Add Number</button>
+                  
           <br />
-          <button type="Submit"> Submit</button>
+
+          <br />
+          <button type="Submit">
+            {" "}
+            Submit
+          </button>
         </form>
       </div>
     </div>
   );
 };
 
-export default Addcontact;
-
+export default AddContact;
 
 /* <input
             {...props}
