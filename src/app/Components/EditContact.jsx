@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { updateContact } from "../redux/ContactSlice";
 import { useNavigate } from "react-router-dom";
@@ -6,44 +7,122 @@ import Navbar from "./Navbar";
 import { Link, useParams } from "react-router-dom";
 
 const EditContact = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [number, setNumber] = useState("");
-
   const { id } = useParams();
 
   const contacts = useSelector((state) => state.contact.list);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    control,
+    reset,
+  } = useForm({
+    mode: "all",
+    defaultValues: {
+      name: "",
+      email: "",
+      number: "",
+    },
+  });
   const currentContact = contacts.find(
     (contact) => contact.id === parseInt(id)
   );
 
-  useEffect(() => {
-    if (currentContact) {
-      setName(currentContact.name);
-      setEmail(currentContact.email);
-      setNumber(currentContact.number);
-    }
-  }, [currentContact]);
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const data =  {
-      id: id,
-      name,
-      email:[email],
-      number,
-    }
-    dispatch(updateContact(data))
-    navigate("/")
+  const onSubmit = (formData) => {
+    const newFormData = {
+      name: formData.name,
+      email: [{ id: Date.now(), inputEmail: formData.email }],
+      number: [{ id: Date.now(), inputNumber: formData.number }],
+    };
+    dispatch(updateContact(newFormData));
+    navigate("/");
   };
+  useEffect(() => {
+    reset: ({currentContact});
+  }, [currentContact]);
 
   return (
     <div>
       <Navbar />
       <div className="form">
+        <h1>Edit Contact {id}</h1>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <label htmlFor="name">name</label>
+          <Controller
+            control={control}
+            name="name"
+            rules={{
+              required: {
+                value: true,
+                message: "required",
+              },
+              minLength: {
+                value: 5,
+                message: "Input more then 5 letters",
+              },
+            }}
+            render={({ field }) => <input {...field} />}
+          />
+
+          {errors?.name?.message && <p>{errors.name.message}</p>}
+
+          <br />
+          <label htmlFor="email">Email</label>
+          <Controller
+            control={control}
+            name="email"
+            rules={{
+              required: {
+                value: true,
+                message: "required",
+              },
+              maxLength: {
+                value: 20,
+                message: "Input less then 20 letters",
+              },
+            }}
+            render={({ field }) => <input {...field} />}
+          />
+          {errors?.email?.message && <p>{errors.email.message}</p>}
+
+          <br />
+          <label htmlFor="number">Number</label>
+          <Controller
+            control={control}
+            name="number"
+            rules={{
+              required: {
+                value: true,
+                message: "required",
+              },
+              pattern: {
+                value: /[1-9][0-9]*|0/g,
+                message: "Enter only number",
+              },
+            }}
+            render={({ field }) => <input {...field} />}
+          />
+          {errors?.number?.message && <p>{errors.number.message}</p>}
+          <br />
+          <input type="submit" />
+
+          <button>
+            <Link className="textDecorationNone" to="/">
+              Cancel
+            </Link>
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default EditContact;
+
+/* <div className="form">
         <h1>Edit Contact {id}</h1>
         <form onSubmit={handleSubmit}>
           <input
@@ -77,9 +156,47 @@ const EditContact = () => {
             </Link>
           </button>
         </form>
-      </div>
-    </div>
-  );
-};
+      </div>*/
 
-export default EditContact;
+/* <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="name"
+          />
+
+          {inputListEmail.map((item, i) => {
+            return (
+              <div key={item.id}>
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={item.inputEmail}
+                  onChange={(e) => setInputListEmail(e.target.value)}
+                />
+              </div>
+            );
+          })}
+
+          <br />
+          {inputListNumber.map((item, i) => {
+            return (
+              <div className="box" key={item.id}>
+                <input
+                  placeholder="Enter Number"
+                  value={item.inputNumber}
+                  onChange={(e) => setInputListNumber(e.target.value)}
+                />
+              </div>
+            );
+          })}
+
+          <br />
+          <button type="Submit"> Submit</button>
+          <button>
+            <Link className="textDecorationNone" to="/">
+              Cancel
+            </Link>
+          </button>
+        </form>*/

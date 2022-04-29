@@ -27,7 +27,9 @@ const contactSlice = createSlice({
         number: action.payload.number,
         email: action.payload.email,
       };
+      console.log(newContact,"newContact");
       state.list = [...state.list, newContact];
+      console.log(state.list);
     },
     updateContact: (state, action) => {
       const newState = state.list.map((item) => {
