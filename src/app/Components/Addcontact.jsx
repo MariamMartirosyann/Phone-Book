@@ -1,134 +1,120 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+
+import React from "react";
+import { useForm, Controller } from "react-hook-form";
 import { addContact } from "../redux/ContactSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 import Navbar from "./Navbar";
 
-const Addcontact = (props) => {
-  const contact = useSelector((state) => state.contact.list);
-  const [inputList, setInputList] = useState([{ input: "" }]);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [number, setNumber] = useState("");
 
+const AddContact = () => {
+  const contacts = useSelector((state) => state.contact.list);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    control,
+  } = useForm({
+    mode:"all",
+    defaultValues: {
+      name: "",
+      email: "",
+      number: "",
+    },
+  });
+  console.log(errors);
 
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (!name.trim() || !email.trim() || !number.trim) {
-      return;
+  const onSubmit = (formData) => {
+    const newFormData = {
+      name: formData.name,
+      email:[{ id: Date.now(), inputEmail: formData.email }],
+      number:[{ id: Date.now(), inputNumber: formData.number  }]
     }
-    dispatch(
-      addContact({
-        name: name,
-        number: number,
-        email: email,
-      }),
-      navigate("/")
-    );
-  };
+    dispatch(addContact(newFormData));
+    navigate("/");
 
-  const handleInputChange = (e, index) => {
-    const { name, value } = e.target;
-    const list = [...inputList];
-    list[index][name] = value;
-    setInputList(list);
-  };
-
-  const handleRemoveClick = (index) => {
-    const list = [...inputList];
-    list.splice(index, 1);
-    setInputList(list);
-  };
-
-  const handleInputAdd = () => {
-    setInputList([...inputList, { input: "" }]);
   };
   return (
+    
     <div>
       <Navbar />
-
       <div className="form">
         <h1>Add Contact</h1>
 
-        <form onSubmit={handleSubmit}>
-          <input
-            {...props}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            type="text"
-            placeholder="name"
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <label htmlFor="name">name</label>
+          <Controller
+            control={control}
+            name="name"
+            rules={{
+              required:{
+                value:true,
+                message:"required",
+            
+              },
+              minLength:{
+                value:5,
+                message:"Input more then 5 letters"
+              }
+
+            }}
+            render={({ field }) => <input {...field}/>}
           />
+        
+        {errors?.name?.message &&  <p>{errors.name.message}</p>}
+         
           <br />
-          {inputList.map((x, i) => {
-            return (
-              <div key={i} className="box">
-                <input
-                  name="email"
-                  placeholder="Enter Email"
-                  value={x.email}
-                  onChange={e => handleInputChange(e, i)}
-                />
-
-                <div className="btn-box">
-                  {inputList.length !== 1 && <button
-
-                    onClick={() => handleRemoveClick(i)}>Remove</button>}
-                  {inputList.length - 1 === i && <button onClick={handleInputAdd}>Add</button>}
-                </div>
-              </div>
-            );
-          })}
-          {inputList.map((x, i) => {
-            return (
-              <div className="box">
-                <input
-                  name="number"
-                  placeholder="Enter Number"
-                  value={x.number}
-                  onChange={e => handleInputChange(e, i)}
-                />
-
-                <div className="btn-box">
-                  {inputList.length !== 1 && <button
-
-                    onClick={() => handleRemoveClick(i)}>Remove</button>}
-                  {inputList.length - 1 === i && <button onClick={handleInputAdd}>Add</button>}
-                </div>
-              </div>
-            );
-          })}
-
-          <input
-            {...props}
-            value={number}
-            onChange={(e) => setNumber(e.target.value)}
-            type="phoneNumber"
-            placeholder="Phone Number"
+          <label htmlFor="email">Email</label>
+          <Controller
+            control={control}
+            name="email"
+            rules={{
+              required:{
+                value:true,
+                message:"required"
+              },
+              maxLength:{
+                value:20,
+                message:"Input less then 20 letters"
+              },
+              
+            }}
+            render={({ field }) => <input {...field}/>}
           />
+          {errors?.email?.message &&  <p>{errors.email.message}</p>}
+         
+      
           <br />
-          <button type="Submit"> Submit</button>
+          <label htmlFor="number">Number</label>
+          <Controller
+            control={control}
+
+            name="number"
+            rules={{
+              required:{
+                value:true,
+                message:"required"
+              },
+              pattern:{
+                value:/[1-9][0-9]*|0/g,
+                message:"Enter only number"
+
+              }
+            }}
+            render={({ field }) => <input {...field}/>}
+          />
+          {errors?.number?.message &&  <p>{errors.number.message}</p>}
+          <br />
+          <input type="submit" />
+  
+        
         </form>
       </div>
     </div>
   );
 };
 
-export default Addcontact;
-
-
-/* <input
-            {...props}
-            value={inputList}
-            onChange={(e) => setEmail(e.target.value)}
-            type="email"
-            placeholder="email"
-          />
-          <br />
-          <button type="Submit" onClick={handleInputAdd}>Add Email</button>
-          <button className="smallBtn"  onClick={handleRemoveClick}>Delete Email</button> <br />
-          
-          <br />*/
+export default AddContact

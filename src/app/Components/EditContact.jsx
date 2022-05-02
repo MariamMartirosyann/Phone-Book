@@ -10,15 +10,16 @@ const EditContact = () => {
   const { id } = useParams();
 
   const contacts = useSelector((state) => state.contact.list);
-
+  const selectedContact = contacts.find(item => item.id == id)
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
-    register,
     formState: { errors },
     handleSubmit,
     control,
     reset,
+    setValue
   } = useForm({
     mode: "all",
     defaultValues: {
@@ -33,16 +34,25 @@ const EditContact = () => {
 
   const onSubmit = (formData) => {
     const newFormData = {
+      id:id,
       name: formData.name,
-      email: [{ id: Date.now(), inputEmail: formData.email }],
-      number: [{ id: Date.now(), inputNumber: formData.number }],
+      email: [{ id:selectedContact.email[0].id,inputEmail: formData.email }],
+      number: [{ id:selectedContact.number[0].id, inputNumber: formData.number }],
     };
+    console.log(newFormData);
     dispatch(updateContact(newFormData));
     navigate("/");
   };
   useEffect(() => {
-    reset: ({currentContact});
-  }, [currentContact]);
+    if(selectedContact){
+      reset({
+        name:selectedContact.name,
+        email:selectedContact.email[0].inputEmail,
+        number:selectedContact.number[0].inputNumber
+      });
+    }
+    
+  }, []);
 
   return (
     <div>
@@ -67,7 +77,10 @@ const EditContact = () => {
             render={({ field }) => <input {...field} />}
           />
 
-          {errors?.name?.message && <p>{errors.name.message}</p>}
+          {errors?.name?.message && <p>{errors.name.message}</p>}  <br />
+          <button type="button" onClick={()=>{
+            setValue("name","currentContact.name")
+          }}>Set Value</button>
 
           <br />
           <label htmlFor="email">Email</label>
@@ -98,6 +111,7 @@ const EditContact = () => {
                 value: true,
                 message: "required",
               },
+             
               pattern: {
                 value: /[1-9][0-9]*|0/g,
                 message: "Enter only number",
@@ -107,7 +121,7 @@ const EditContact = () => {
           />
           {errors?.number?.message && <p>{errors.number.message}</p>}
           <br />
-          <input type="submit" />
+          <input type="submit" /><br/>
 
           <button>
             <Link className="textDecorationNone" to="/">

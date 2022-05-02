@@ -5,13 +5,13 @@ const contactSlice = createSlice({
   initialState: {
     list: [
       {
-        id: 0,
+        id: 1,
         name:"John Doe",
         email:[{id:1,inputEmail:"k@mail.ru"}],
-        number: [{inputNumber:2222222222}],
+        number: [{id:1,inputNumber:2222222222}],
       },
       {
-        id: 1,
+        id: 2,
         name: "Johna Smitgh",
         email:[{id:2,inputEmail:"Johna@mail.ru"}],
         number:[{inputNumber:1111111111}],

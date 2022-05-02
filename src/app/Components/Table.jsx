@@ -32,7 +32,7 @@ const Table = () => {
               console.log(i.id);
                return (
                 <tr key={i.id}>
-                <td>{i.id + 1}</td>
+                <td>{i.id}</td>
                 <td>{i.name} </td>
                 <td>{i.email.map((item)=>( <p  key={i.id}>{item.inputEmail}</p>))}</td>
 
