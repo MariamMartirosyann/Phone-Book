@@ -77,12 +77,8 @@ const EditContact = () => {
             render={({ field }) => <input {...field} />}
           />
 
-          {errors?.name?.message && <p>{errors.name.message}</p>}  <br />
-          <button type="button" onClick={()=>{
-            setValue("name","currentContact.name")
-          }}>Set Value</button>
-
-          <br />
+          {errors?.name?.message && <p>{errors.name.message}</p>} 
+          <br/>
           <label htmlFor="email">Email</label>
           <Controller
             control={control}
