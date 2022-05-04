@@ -27,40 +27,48 @@ const Table = () => {
             </tr>
           </thead>
           <tbody>
-          {contact
-            ? contact.map((i) => {
-              console.log(i.id);
-               return (
-                <tr key={i.id}>
-                <td>{i.id}</td>
-                <td>{i.name} </td>
-                <td>{i.email.map((item)=>( <p  key={i.id}>{item.inputEmail}</p>))}</td>
+            {contact
+              ? contact.map((i) => {
+                  console.log(i.id);
+                  return (
+                    <tr key={i.id}>
+                      <td>{i.id}</td>
+                      <td>{i.name} </td>
+                      <td>
+                        {i.email.map((item) => (
+                          <p key={i.id}>{item.value}</p>
+                        ))}
+                      </td>
 
-                <td>{i.number.map((item)=>( <p  key={i.id}>{item.inputNumber}</p>))}</td>
-                <td>
-                  <button className="editBtn">
-                    {" "}
-                    <Link
-                      to={`/editContact/${i.id}`}
-                      className="extDecorationNone"
-                    >
-                      Edit
-                    </Link>
-                  </button>
-                  <br />
-                  <button
-                    className="editBtn"
-                    type="button"
-                    onClick={(e) => handleDeleteClick(i.id, e)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-               )
-            })
-            : null}
-            </tbody>
+                      <td>
+                        {i.number.map((item) => (
+                          <p key={i.id}>{item.value}</p>
+                        ))}
+                      </td>
+                      <td>
+                        <button className="editBtn">
+                          {" "}
+                          <Link
+                            to={`/editContact/${i.id}`}
+                            className="extDecorationNone"
+                          >
+                            Edit
+                          </Link>
+                        </button>
+                        <br />
+                        <button
+                          className="editBtn"
+                          type="button"
+                          onClick={(e) => handleDeleteClick(i.id, e)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })
+              : null}
+          </tbody>
         </table>
       </Grid>
     </>

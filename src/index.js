@@ -5,16 +5,20 @@ import { store } from '../src/app/redux/store';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
+import { ThemeProvider } from "@mui/material/styles";
+import { dashboardTheme } from './dashboardTheme';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
 
 root.render(
+  <ThemeProvider>
   <React.StrictMode>
     <Provider store={store}>
       <App />
     </Provider>
   </React.StrictMode>
+  </ThemeProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

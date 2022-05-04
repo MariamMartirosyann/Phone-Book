@@ -1,12 +1,24 @@
-
-import React from "react";
-import { useForm, Controller } from "react-hook-form";
+import React, { Fragment } from "react";
+import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { addContact } from "../redux/ContactSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Grid from "@mui/material/Grid";
+import InputField from "../shared/ui/Input";
+import BtnComponent from "../shared/ui/Input/BtnComponent";
+
 
 import Navbar from "./Navbar";
 
+
+const emailDefaultValue = {
+  id: Date.now(),
+  value: "",
+};
+const numberDefaultValue = {
+  id: Date.now(),
+  value: "",
+};
 
 const AddContact = () => {
   const contacts = useSelector((state) => state.contact.list);
@@ -14,7 +26,8 @@ const AddContact = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
-    register,
+    watch,
+    getValues,
     formState: { errors },
     handleSubmit,
     control,
@@ -22,105 +35,157 @@ const AddContact = () => {
     mode: "all",
     defaultValues: {
       name: "",
-      email: "",
-      number: "",
+      email: [emailDefaultValue],
+      number: [numberDefaultValue],
     },
   });
-  console.log(errors);
 
+  const emailFieldValue = useFieldArray({
+    control,
+    name: "email",
+  });
+  const numberFieldValue = useFieldArray({
+    control,
+    name: "number",
+  });
   const onSubmit = (formData) => {
     const newFormData = {
       name: formData.name,
-      email: [{ id: Date.now(), inputEmail: formData.email }],
-      number: [{ id: Date.now(), inputNumber: formData.number }]
-    }
+      email: formData.email,
+      number: formData.number,
+    };
+    console.log(newFormData);
     dispatch(addContact(newFormData));
     navigate("/");
-
   };
+  const handleAddEmail = () => {
+    emailFieldValue.append(emailDefaultValue);
+  };
+  const handleAddNumber = () => {
+    numberFieldValue.append();
+  };
+  const handleRemoveEmail = (index) => {
+    console.log(index);
+    emailFieldValue.remove(index);
+  };
+  const handleRemoveNumber = () => {
+    numberFieldValue.remove();
+  };
+ 
   return (
-
     <div>
       <Navbar />
       <div className="form">
         <h1>Add Contact</h1>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <label htmlFor="name">name</label>
-          <Controller
+          <InputField
+          
             control={control}
             name="name"
             rules={{
               required: {
                 value: true,
                 message: "required",
-
               },
               minLength: {
                 value: 5,
-                message: "Input more then 5 letters"
-              }
-
+                message: "Input more then 5 letters",
+              },
             }}
-            render={({ field }) => <input {...field} />}
+            label={"Name"}
+            helperText={"Enter your name"}
           />
 
           {errors?.name?.message && <p>{errors.name.message}</p>}
 
           <br />
+          <Grid container className="inputGrid">
+            <Grid item xs={6}>
+              {emailFieldValue.fields?.map((item, index) => {
+                return (
+                  <Fragment key={index}>
+                    <InputField
+                      key={index}
+                      control={control}
+                      color={"goldenrod"}
+                      name={`email.${index}.value`}
+                      rules={{
+                        required: {
+                          value: true,
+                          message: "required",
+                        },
+                        maxLength: {
+                          value: 20,
+                          message: "Input less then 20 letters",
+                        },
+                      }}
+                      label={"Email"}
+                      helperText={"Enter your email"}
+                    />
+                    <br />
+                    <br />
+                    <br />
 
-          <label htmlFor="email">Email</label>
-          <Controller 
-            control={control}
-            name="email"
-            rules={{
-              required: {
-                value: true,
-                message: "required"
-              },
-              maxLength: {
-                value: 20,
-                message: "Input less then 20 letters"
-              },
+                    {errors?.email?.message && <p>{errors.email.message}</p>}
+                    <br />
 
-            }}
-            render={({ field }) => <input {...field} />}
-          />
-          {errors?.email?.message && <p>{errors.email.message}</p>}
-          <br />
-         
-          <label htmlFor="number">Number</label>
-          <Controller
-            control={control}
+                    <BtnComponent onClick={() => handleRemoveEmail(index) }  text={" Delete"}/>
+                  
+                  </Fragment>
+                );
+              })}
+              <br />
 
-            name="number"
-            rules={{
-              required: {
-                value: true,
-                message: "required"
-              },
-              pattern: {
-                value: /[1-9][0-9]*|0/g,
-                message: "Enter only number"
+              <BtnComponent onClick={handleAddEmail} text={"Add Email"} ></BtnComponent>
 
-              }
-            }}
-            render={({ field }) => <input {...field} />}
-          />
-          {errors?.number?.message && <p>{errors.number.message}</p>}
-          <br />
-          <input type="submit" />
+              <br />
+            </Grid>
+            <Grid item xs={6}>
+              {numberFieldValue.fields.map((item, index) => {
+                return (
+                  <Fragment key={index}>
+                    <InputField
+                      key={index}
+                      control={control}
+                      name={`number.${index}.value`}
+                      rules={{
+                        required: {
+                          value: true,
+                          message: "required",
+                        },
+                        maxLength: {
+                          value: 20,
+                          message: "Input less then 20 letters",
+                        },
+                      }}
+                      label={"Number"}
+                      helperText={"Enter your number"}
+                    />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
 
+                    <BtnComponent onClick={handleRemoveNumber} text={"Delete"} /> 
+                    <br />
+                  </Fragment>
+                );
+              })}
+              
+              <BtnComponent onClick={handleAddNumber} text={"Add Number"}/>
+              <br />
+            </Grid>
+          </Grid>
 
+          <BtnComponent type="submit" text={"Submit"}/>
         </form>
       </div>
     </div>
   );
 };
 
-export default AddContact
-
-
+export default AddContact;
 
 /* {inputEmail?.email?.map((item, i) => {
             <Controller
@@ -141,4 +206,36 @@ export default AddContact
               render={({ field }) => <input {...field} />}
             />
 
-          })}*/ 
+          })}
+          <Controller
+                      key={index}
+                      control={control}
+                      name={`email.${index}.value`}
+                      rules={{
+                        required: {
+                          value: true,
+                          message: "required",
+                        },
+                        maxLength: {
+                          value: 20,
+                          message: "Input less then 20 letters",
+                        },
+                      }}
+                      render={({ field }) => <input {...field} />}
+                    />
+                     <Controller
+                      control={control}
+                      name={`number.${index}.value`}
+                      rules={{
+                        required: {
+                          value: true,
+                          message: "required",
+                        },
+                        maxLength: {
+                          value: 20,
+                          message: "Input less then 20 letters",
+                        },
+                      }}
+                      render={({ field }) => <input {...field} />}
+                    />
+                    <br />*/

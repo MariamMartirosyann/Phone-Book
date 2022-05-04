@@ -49,14 +49,7 @@ text-align: center;
 align-items: center;
 
 }
- input {
-  width: 400px;
-  height: 30px;
-  padding: 7px;
-  border: 1px solid goldenrod;
-  color: goldenrod;
-  margin: 6.5px;
-}
+ 
 .submit, .form button{
   width: 400px;
   height: 30px;
@@ -64,6 +57,7 @@ align-items: center;
   border: 1px solid goldenrod;
   color: goldenrod;
   background-color: black;
+  margin: 5px;
   
 }
 .textDecorationNone{
@@ -83,4 +77,20 @@ align-items: center;
 label{
   width: 800px;
   height: 30px;
+}
+.mainInput{
+  width: 400px;
+  height: 20px;
+  padding: 7px;
+  border: 1px solid goldenrod;
+  color: goldenrod;
+  margin: 20px;
+  text-align: start;
+}
+.inputGrid{
+  margin: 70px;
+}
+.Mui-active{
+  color: goldenrod;
+  border: 1px solid goldenrod;
 }

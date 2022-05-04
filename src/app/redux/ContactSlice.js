@@ -7,14 +7,14 @@ const contactSlice = createSlice({
       {
         id: 1,
         name:"John Doe",
-        email:[{id:1,inputEmail:"k@mail.ru"}],
-        number: [{id:1,inputNumber:2222222222}],
+        email:[{id:1,value:"k@mail.ru"}],
+        number: [{id:1,value:'2222222222'}],
       },
       {
         id: 2,
         name: "Johna Smitgh",
-        email:[{id:2,inputEmail:"Johna@mail.ru"}],
-        number:[{inputNumber:1111111111}],
+        email:[{id:2,value:"Johna@mail.ru"}],
+        number:[{id:2,value:'1111111111'}],
       },
     ]
   },
