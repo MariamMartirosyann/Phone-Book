@@ -8,7 +8,7 @@ import "../../App.css";
 const HomePage = () => {
   return (
     <div>
-      <Navbar />
+   <AppBarComponent/>
       <Addbtn />
       <Table />
     </div>
