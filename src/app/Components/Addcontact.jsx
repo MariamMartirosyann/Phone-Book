@@ -108,7 +108,6 @@ const AddContact = () => {
                     <InputField
                       key={index}
                       control={control}
-                      color={"goldenrod"}
                       name={`email.${index}.value`}
                       rules={{
                         required: {

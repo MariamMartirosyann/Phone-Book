@@ -6,13 +6,12 @@ const InputField = (props) => {
     control,
     rules = null,
     name = "name2",
-    errors,
     label,
     helperText,
     background,
     variant,
     border,
-    color,
+    color="primary",
   } = props;
   return (
     <Controller
@@ -24,7 +23,7 @@ const InputField = (props) => {
           {...field}
           border={border}
           variant={variant}
-          color={color}
+         
           className="mainInput"
           id="demo-helper-text-aligned"
           label={label}

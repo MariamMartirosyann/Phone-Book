@@ -1,33 +1,29 @@
 * {
   margin: 0;
   padding: 0;
-
   color: goldenrod;
 
 }
 
 /*``````````````````````````````````````````````````````Navbar```````````````````````````````````````````````````````````````````````````````````````````*/
-.navbar {
-  width: 100%;
-  height: 60px;
-  padding: 30px;
-  background-color: black;
-
+.navbar{
+background: black;
+padding: 15px;
+margin-bottom: 20px;
 }
 
 .addContact {
   width: 100%;
   height: 40px;
   justify-content: end;
+  
 }
 
 .addBtn {
   margin: 10px 100px;
-  width: 100px;
+  width: 150px;
   height: 40px;
-  border: 2px solid goldenrod;
-  background: transparent;
-
+ 
 }
 
 .tableArea {
@@ -70,10 +66,7 @@ align-items: center;
   border: 1px solid goldenrod;
   margin: 3px;
 }
-.smallBtn{
-  width: 50px;
-  background-color: aqua;
-}
+
 label{
   width: 800px;
   height: 30px;
@@ -90,7 +83,9 @@ label{
 .inputGrid{
   margin: 70px;
 }
-.Mui-active{
-  color: goldenrod;
-  border: 1px solid goldenrod;
+.btnTable{
+  width: 100px;
+}
+.linkBtn{
+  width: 150px;
 }
