@@ -1,9 +1,9 @@
 import React from "react";
-import { deleteContact } from "../redux/ContactSlice";
+import { deleteContact } from "../../redux/ContactSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
-import BtnComponent from "../shared/ui/Input/BtnComponent";
+import BtnComponent from "../ui/button";
 
 const Table = () => {
   const contact = useSelector((state) => state.contact.list);
@@ -51,7 +51,7 @@ const Table = () => {
                           to={`/editContact/${i.id}`}
                           className=" linkBtn textDecorationNone "
                         >
-                          <BtnComponent  text={"Edit"} variant="text"/>{" "}
+                          <BtnComponent text={"Edit"} variant="text" />{" "}
                         </Link>
 
                         <br />

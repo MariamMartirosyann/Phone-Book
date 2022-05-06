@@ -1,16 +1,12 @@
-
-
-import React from 'react';
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import HomePage from '../src/app/Components/HomePage'
-import EditContact from './app/Components/EditContact';
-import Addcontact from './app/Components/Addcontact';
-
+import HomePage from "../src/app/pages/HomePage";
+import EditContact from "./app/pages/EditContact";
+import Addcontact from "./app/pages/AddContact";
 
 function App() {
   return (
-    <div >
-
+    <div>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />

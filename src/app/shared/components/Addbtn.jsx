@@ -1,7 +1,7 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
-import BtnComponent from "../shared/ui/Input/BtnComponent";
+import BtnComponent from "../ui/button";
 
 const Addbtn = () => {
   return (
@@ -9,8 +9,7 @@ const Addbtn = () => {
       <Grid container className="addContact">
         <Link className="textDecorationNone addBtn" to="/addContact">
           {" "}
- 
-          <BtnComponent  text={"Add Contact"} />{" "}
+          <BtnComponent text={"Add Contact"} />{" "}
         </Link>
       </Grid>
     </>

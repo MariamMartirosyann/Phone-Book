@@ -1,19 +1,19 @@
-import React, { useState, useEffect, Fragment } from "react";
-import { useForm, Controller, useFieldArray } from "react-hook-form";
+import React, { useEffect, Fragment } from "react";
+import { useForm, useFieldArray } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { updateContact } from "../redux/ContactSlice";
+import { updateContact } from "../../redux/ContactSlice";
 import { useNavigate } from "react-router-dom";
-import Navbar from "./Navbar";
+import Navbar from "../../shared/components/Navbar";
 import { Link, useParams } from "react-router-dom";
 import Grid from "@mui/material/Grid";
-import InputField from "../shared/ui/Input";
-import BtnComponent from "../shared/ui/Input/BtnComponent";
+import InputField from "../../shared/ui/Input";
+import BtnComponent from "../../shared/ui/button";
 
 const EditContact = () => {
   const { id } = useParams();
 
   const contacts = useSelector((state) => state.contact.list);
-  const selectedContact = contacts.find((item) => item.id == id);
+  const selectedContact = contacts.find((item) => item.id === id);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -31,9 +31,7 @@ const EditContact = () => {
       number: [],
     },
   });
-  const currentContact = contacts.find(
-    (contact) => contact.id === parseInt(id)
-  );
+
   const emailFieldValue = useFieldArray({
     control,
     name: "email",
@@ -75,7 +73,7 @@ const EditContact = () => {
         number: selectedContact.number,
       });
     }
-  }, []);
+  }, [reset, selectedContact]);
 
   return (
     <div>
@@ -173,17 +171,19 @@ const EditContact = () => {
                   </Fragment>
                 );
               })}
-            
-              <BtnComponent onClick={handleAddNumber} text={" Add Number"}/>
+
+              <BtnComponent onClick={handleAddNumber} text={" Add Number"} />
 
               <br />
             </Grid>
           </Grid>
-          <BtnComponent text={"submit"} type="submit"/><br/>
+          <BtnComponent text={"submit"} type="submit" />
+          <br />
 
-         <BtnComponent text={" Cancel"}> <Link className="textDecorationNone" to="/">
-              
-            </Link></BtnComponent>
+          <BtnComponent text={" Cancel"}>
+            {" "}
+            <Link className="textDecorationNone" to="/"></Link>
+          </BtnComponent>
           <br />
         </form>
       </div>
@@ -192,82 +192,3 @@ const EditContact = () => {
 };
 
 export default EditContact;
-
-/* <div className="form">
-        <h1>Edit Contact {id}</h1>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="name"
-          />
-          <br />
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="email"
-          />
-          <br />
-          <input
-            type="phoneNumber"
-            value={number}
-            onChange={(e) => setNumber(e.target.value)}
-            placeholder="Phone Number"
-          />
-          <br />
-          <button type="Submit" className="submit">
-            Submit
-          </button>
-          <br />
-          <button>
-            <Link className="textDecorationNone" to="/">
-              Cancel
-            </Link>
-          </button>
-        </form>
-      </div>*/
-
-/* <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="name"
-          />
-
-          {inputListEmail.map((item, i) => {
-            return (
-              <div key={item.id}>
-                <input
-                  type="email"
-                  placeholder="Email"
-                  value={item.inputEmail}
-                  onChange={(e) => setInputListEmail(e.target.value)}
-                />
-              </div>
-            );
-          })}
-
-          <br />
-          {inputListNumber.map((item, i) => {
-            return (
-              <div className="box" key={item.id}>
-                <input
-                  placeholder="Enter Number"
-                  value={item.inputNumber}
-                  onChange={(e) => setInputListNumber(e.target.value)}
-                />
-              </div>
-            );
-          })}
-
-          <br />
-          <button type="Submit"> Submit</button>
-          <button>
-            <Link className="textDecorationNone" to="/">
-              Cancel
-            </Link>
-          </button>
-        </form>*/

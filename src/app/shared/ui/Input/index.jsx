@@ -1,5 +1,6 @@
-import { Controller } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import TextField from "@mui/material/TextField";
+import { Fragment } from "react";
 
 const InputField = (props) => {
   const {
@@ -10,28 +11,30 @@ const InputField = (props) => {
     helperText,
     background,
     variant,
+    errors,
     border,
-    color="primary",
   } = props;
   return (
-    <Controller
-      control={control}
-      name={name}
-      rules={rules}
-      render={({ field }) => (
-        <TextField
-          {...field}
-          border={border}
-          variant={variant}
-         
-          className="mainInput"
-          id="demo-helper-text-aligned"
-          label={label}
-          helperText={helperText}
-          background={background}
-        />
-      )}
-    />
+    <Fragment>
+      <Controller
+        control={control}
+        name={name}
+        rules={rules}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            border={border}
+            variant={variant}
+            className="mainInput"
+            id="demo-helper-text-aligned"
+            label={label}
+            helperText={helperText}
+            background={background}
+          />
+        )}
+      />
+      {errors?.[name]?.message && <p>{errors[name].message}</p>}
+    </Fragment>
   );
 };
 
